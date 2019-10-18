@@ -1,7 +1,7 @@
 APP?=app
 PORT?=1323
 RELEASE?=0.0.1
-#COMMIT?=$(shell git rev-parse --short HEAD)
+COMMIT?=$(shell git rev-parse --short HEAD)
 BUILD_TIME?=$(shell date -u '+%Y-%m-%d_%H:%M:%S')
 PROJECT?=mq/academy
 GOOS?=linux
@@ -19,6 +19,7 @@ build: clean
 	CGO_ENABLED=1 GOOS=${GOOS} GOARCH=${GOARCH} go build \
 	-mod vendor \
 	-ldflags "-s -w -X main.Release=${RELEASE} \
+	-X main.Commit=${COMMIT} \
 	-X main.BuildTime=${BUILD_TIME}" \
 	-o ${APP}
 

@@ -7,13 +7,14 @@ import (
 	"sync/atomic"
 )
 
-func Home(buildTime, release string) http.HandlerFunc {
+func Home(buildTime, commit, release string) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		info := struct {
 			BuildTime string `json:"buildTime"`
+			Commit    string `json:"commit"`
 			Release   string `json:"release"`
 		}{
-			BuildTime: buildTime, Release: release,
+			BuildTime: buildTime, Commit: commit, Release: release,
 		}
 
 		b, err := json.Marshal(info)

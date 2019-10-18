@@ -52,7 +52,7 @@ func NewGameServer(opts ...GameServerOption) *GameServer {
 	return server
 }
 
-func (server *GameServer) Router() *mux.Router {
+func (server *GameServer) Router(buildTime, commit, release string) *mux.Router {
 	if server.IsReady == nil || server.IsHealthy == nil {
 		log.Fatal("server nil")
 	}
@@ -67,7 +67,7 @@ func (server *GameServer) Router() *mux.Router {
 
 	r := mux.NewRouter()
 	// for health check
-	r.HandleFunc("/", handler.Home(BuildTime, Release)).Methods("GET")
+	r.HandleFunc("/", handler.Home(buildTime, commit, release)).Methods("GET")
 	r.HandleFunc("/health", handler.Health(server.IsHealthy))
 	r.HandleFunc("/healthy", handler.Healthy(server.IsHealthy))
 	r.HandleFunc("/unhealthy", handler.Unhealthy(server.IsHealthy))
@@ -96,7 +96,7 @@ func (server *GameServer) Run() {
 	signal.Notify(interrupt, os.Interrupt, syscall.SIGTERM)
 	srv := &http.Server{
 		Addr:    ":" + server.Port,
-		Handler: server.Router(),
+		Handler: server.Router(BuildTime, Commit, Release),
 	}
 
 	go func() {

@@ -6,7 +6,7 @@ import (
 )
 
 func main() {
-	log.Printf("Starting the service... build time: %s, release: %s", BuildTime, Release)
+	log.Printf("Starting the service... build time: %s, commit: %s, release: %s", BuildTime, Commit, Release)
 	port := os.Getenv("SERVER_PORT")
 	if port == "" {
 		port = "1323"

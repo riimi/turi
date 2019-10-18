@@ -1,0 +1,5 @@
+FROM golang:1.13-alpine as build
+
+WORKDIR /go/src/app
+ENV GO111MODULE=on
+RUN apk add --no-cache make git gcc build-base
